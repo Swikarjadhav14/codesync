@@ -1,4 +1,17 @@
-/* Basic Reset */
+:root {
+    --bg-dark: #10111A;
+    --bg-panel: #181926;
+    --bg-input: #232537;
+    --text-primary: #CDD6F4;
+    --text-secondary: #7F849C;
+    --border-color: #313244;
+    --accent-primary: #89B4FA;
+    --accent-secondary: #A6E3A1;
+    --accent-danger: #F38BA8;
+    --font-sans: 'Inter', sans-serif;
+    --font-mono: 'Fira Code', monospace;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -6,134 +19,312 @@
 }
 
 body {
-    font-family: 'Montserrat', sans-serif;
-    background-color: #f4f7f6;
-    color: #333;
-    display: flex;
-    height: 100vh;
+    font-family: var(--font-sans);
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
     overflow: hidden;
-    padding-bottom: 40px;
+    height: 100vh;
 }
 
-.container {
+.app-container {
     display: flex;
-    width: 100%;
+    height: 100%;
 }
 
-.left-panel {
-    width: 60%;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-}
-
-.right-panel {
-    width: 40%;
-    padding: 20px;
-    background: #fff;
-    border-left: 1px solid #ddd;
-    display: flex;
-    flex-direction: column;
-}
-
-.editor-container, .output-container {
-    margin-bottom: 20px;
+/* --- Editor Panel (Left) --- */
+.editor-panel {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
 }
 
-h2 {
-    margin-bottom: 10px;
-    font-size: 1.2em;
-}
-
-#code-editor, #outputContainer {
-    width: 100%;
-    flex-grow: 1;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 10px;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 1em;
-    background: #fff;
-}
-
-#code-editor {
-    background: #2d2d2d;
-    color: #f8f8f2;
+.editor-header {
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    gap: 20px;
 }
 
-#languageDropdown {
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
+/* THIS IS THE FIX: 'align-items: center' ensures vertical alignment */
+.control-group, .control-group-buttons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-#copyButton {
-    padding: 10px 20px;
+.controls label, .controls select, .controls button {
+    font-size: 0.9em;
+    height: 36px;
     border: none;
-    background: #007bff;
-    color: #fff;
-    border-radius: 4px;
+    border-radius: 6px;
+}
+
+.controls select {
+    background-color: var(--bg-input);
+    color: var(--text-primary);
+    padding: 0 10px;
+}
+
+.controls button {
+    background-color: var(--bg-input);
+    color: var(--text-secondary);
+    padding: 0 15px;
     cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-#copyButton:hover {
-    background: #0056b3;
+.controls button:hover {
+    background-color: var(--border-color);
+    color: var(--text-primary);
 }
 
-.chat-box, .participants-box {
+.cta-button {
+    background-color: var(--accent-primary) !important;
+    color: var(--bg-dark) !important;
+    font-weight: 700;
+}
+
+#admin-secret-key-container {
+    color: var(--text-secondary);
+    font-size: 0.9em;
+}
+
+#secret-key-display {
+    color: var(--accent-secondary);
+    font-family: var(--font-mono);
+    background-color: var(--bg-input);
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.editor-main {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
 }
 
-.participants-box {
-    margin-bottom: 20px;
+#code-editor {
+    flex: 3;
+    background-color: var(--bg-dark);
+    border: none;
+    color: var(--text-primary);
+    padding: 20px;
+    font-family: var(--font-mono);
+    font-size: 1em;
+    line-height: 1.7;
+}
+#code-editor:focus {
+    outline: none;
+}
+
+.output-console {
+    flex: 1;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.output-header {
+    padding: 8px 20px;
+    background-color: var(--bg-panel);
+    border-bottom: 1px solid var(--border-color);
+}
+
+#outputContainer {
+    flex-grow: 1;
+    padding: 15px 20px;
+    background-color: var(--bg-dark);
+    font-family: var(--font-mono);
+    white-space: pre-wrap;
+    overflow-y: auto;
+}
+
+/* --- Sidebar Panel (Right) --- */
+.sidebar-panel {
+    width: 350px;
+    min-width: 300px;
+    background-color: var(--bg-panel);
+    border-left: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    gap: 20px;
+}
+
+.session-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.session-controls button {
+    padding: 10px;
+    font-size: 0.9em;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 700;
+}
+
+.secondary-button {
+    background-color: var(--bg-input);
+}
+.secondary-button:hover {
+    border-color: var(--text-primary);
+}
+
+.danger-button {
+    background-color: var(--accent-danger) !important;
+    color: var(--bg-dark) !important;
+    border: none !important;
+}
+
+.sidebar-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.sidebar-section h4 {
+    color: var(--text-secondary);
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.8em;
+    letter-spacing: 0.5px;
 }
 
 #participants-list {
     list-style: none;
-    padding: 10px;
-    background: #f9f9f9;
-    border-radius: 4px;
-    flex-grow: 1;
-    overflow-y: auto;
+}
+#participants-list li {
+    padding: 8px 12px;
+    background-color: var(--bg-input);
+    border-radius: 6px;
+    margin-bottom: 5px;
 }
 
+.chat-box {
+    flex-grow: 1;
+    min-height: 200px;
+}
 #messages {
     flex-grow: 1;
+    background-color: var(--bg-dark);
     padding: 10px;
-    background: #f9f9f9;
-    border-radius: 4px;
-    margin-bottom: 10px;
+    border-radius: 6px;
     overflow-y: auto;
-    height: 200px; /* or other fixed height */
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.chat-message {
+    padding: 8px 12px;
+    background-color: var(--bg-input);
+    border-radius: 6px;
+    line-height: 1.4;
+    word-wrap: break-word;
 }
 
 .chat-input {
     display: flex;
 }
-
 #message {
     flex-grow: 1;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px 0 0 4px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-input);
+    padding: 10px;
+    border-radius: 6px 0 0 6px;
+    color: var(--text-primary);
+}
+#message:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+}
+#sendBtn {
+    border: none;
+    background-color: var(--accent-primary);
+    color: var(--bg-dark);
+    padding: 0 15px;
+    border-radius: 0 6px 6px 0;
+    cursor: pointer;
 }
 
-#sendBtn {
-    padding: 8px 15px;
+/* --- Modal Styling --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+}
+.modal-content {
+    background: var(--bg-panel);
+    padding: 40px;
+    border-radius: 12px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    border: 1px solid var(--border-color);
+}
+#modal-input {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--bg-input);
+    color: var(--text-primary);
+    font-size: 1em;
+    font-family: var(--font-sans);
+}
+
+#modal-input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+}
+
+#modal-submit-btn {
+    display: block;
+    width: 100%;
+    padding: 12px 20px;
     border: none;
-    background: #007bff;
-    color: #fff;
+    background: var(--accent-primary);
+    color: var(--bg-dark);
+    border-radius: 6px;
     cursor: pointer;
-    border-radius: 0 4px 4px 0;
-} 
+    font-size: 1.1em;
+    font-weight: 700;
+    transition: opacity 0.2s ease;
+}
+
+#modal-submit-btn:hover {
+    opacity: 0.9;
+}
+
+.modal-error {
+    color: var(--accent-danger);
+    margin-bottom: 10px;
+    height: 1.2em;
+    font-size: 0.9em;
+    text-align: center;
+}
+
+.controls label {
+    display: flex;
+    align-items: center;
+}

@@ -1,81 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CodeSync - Editor</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="editor-style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeSync - Editor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Fira+Code&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="editor-style.css">
 </head>
-
 <body>
-
-  <!-- <h1>Editor Room</h1> -->
-  <div class="container">
-    <div class="left-panel">
-      <div class="editor-container">
-        <div class="controls">
-          <div>
-            <label for="languageDropdown">Language:</label>
-            <select id="languageDropdown">
-              <option value="1">C</option>
-              <option value="2">C++</option>
-              <option value="4">Java</option>
-              <option value="28">Python</option>
-            </select>
-          </div>
-          <button id="copyButton">Execute Code</button>
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <h2 id="modal-title">Enter Your Name</h2>
+            <p id="modal-error" class="modal-error"></p>
+            <input type="text" id="modal-input" placeholder="Your Name...">
+            <button id="modal-submit-btn">Join Session</button>
         </div>
-        <textarea id="code-editor" placeholder="Type your code here..."></textarea>
-      </div>
-      <div class="output-container">
-        <h2>Output</h2>
-        <div id="outputContainer"></div>
-      </div>
     </div>
 
-    <div class="right-panel">
-      <div class="participants-box">
-        <h2>Participants</h2>
-        <ul id="participants-list"></ul>
-      </div>
-      <div class="chat-box">
-        <h2>Chat</h2>
-        <div id="messages"></div>
-        <div class="chat-input">
-          <input type="text" id="message" placeholder="Enter Message" />
-          <button id="sendBtn">Send</button>
+    <div class="app-container">
+        <div class="editor-panel">
+            <div class="editor-header">
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="languageDropdown">Language</label>
+                        <select id="languageDropdown">
+                            <option value="1">C</option>
+                            <option value="2">C++</option>
+                            <option value="4">Java</option>
+                            <option value="28">Python</option>
+                        </select>
+                    </div>
+                    <div id="admin-secret-key-container" style="display: none;">
+                        <span>Session Key: <code id="secret-key-display"></code></span>
+                    </div>
+                    <div class="control-group-buttons">
+                        <input type="file" id="file-upload-input" accept=".c, .cpp, .java, .py, .txt" style="display: none;" />
+                        <button id="file-upload-btn" title="Upload File">Upload</button>
+                        <button id="file-export-btn" title="Export File">Export</button>
+                        <button id="executeButton" class="cta-button" title="Execute Code">Run</button>
+                    </div>
+                </div>
+            </div>
+            <div class="editor-main">
+                <textarea id="code-editor" placeholder="Your code starts here..."></textarea>
+                <div class="output-console">
+                    <div class="output-header">
+                        <h4>Output</h4>
+                    </div>
+                    <div id="outputContainer"></div>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <div class="sidebar-panel">
+            <div class="session-controls">
+                <button id="invite-btn" class="secondary-button" title="Invite Others" style="display: none;">Invite</button>
+                <button id="leave-room-btn" class="danger-button" title="Leave Session">Leave Session</button>
+            </div>
+            <div class="sidebar-section">
+                <h4>Participants</h4>
+                <ul id="participants-list"></ul>
+            </div>
+            <div class="sidebar-section chat-box">
+                <h4>Chat</h4>
+                <div id="messages"></div>
+                <div class="chat-input">
+                    <input type="text" id="message" placeholder="Type a message..." />
+                    <button id="sendBtn">Send</button>
+                </div>
+            </div>
+            <div id="audio-container" style="display:none;"></div>
+        </div>
     </div>
-  </div>
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-  <script src="client.js"></script>
-  <script>
-    const socket = io();
-    const sendBtn = document.getElementById("sendBtn");
-    const messageInput = document.getElementById("message");
-    const allmessages = document.getElementById("messages");
-
-    socket.on("message", (message) => {
-      const p = document.createElement('p');
-      p.innerText = message;
-      allmessages.appendChild(p);
-    });
-
-    if (sendBtn) {
-      sendBtn.addEventListener('click', e => {
-        const message = messageInput.value;
-        if (message) {
-          socket.emit("user-message", message);
-          messageInput.value = "";
-        }
-      });
-    }
-  </script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="client.js"></script>
 </body>
-
 </html>
